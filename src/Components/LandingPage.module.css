@@ -1,0 +1,36 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.backgr{
+    width: 1000px;
+    height: 500px;
+    background-color: rgb(158, 145, 110);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 20px;
+    font-size: 20px;
+    color: darkgreen;
+}
+
+.backgr .title h1{
+    font-size: 90px;
+    margin-bottom: 10px;
+}
+
+.backgr .button button{
+    margin: 10px;
+    transition: 0.5s;
+    background-color: green;
+    color: whitesmoke;
+}
+
+.backgr .button button:hover{
+    margin: 10px;
+    transition: 0.5s;
+    background-color: rgb(0, 164, 0);
+    border: none;
+}
