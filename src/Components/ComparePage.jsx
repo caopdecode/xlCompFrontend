@@ -1,10 +1,13 @@
 import React, {useState} from 'react'
 import './ComparePage.css'
 import styled from 'styled-components'
+import api from './services/api.js';
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditDIcon from '@mui/icons-material/Edit'
 
 const Backgr = styled.div`
   width: 1000px;
-  height: 500px;
+  min-height: 650px;
   background-color: rgb(233, 207, 141);
   display: flex;
   justify-content: center;
@@ -16,12 +19,13 @@ const Backgr = styled.div`
   `;
 
 const InfoCont = styled.div`
-    diplay: flex;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 950px;
-    height: 450px;
+    height: 690;
+    max-height: 100%
 `;
 
 const Title = styled.h2`
@@ -77,16 +81,17 @@ const CompareButton = styled.button`
 
 const ResultsDiv = styled.div`
   margin-top: 20px;
-  padding: 20px;
-  border: 1px solid #ddd;
   border-radius: 5px;
   background-color: #f9f9f9;
+  width: 950px;
+  height: 200px;
+  overflow: scroll;
 `;
 
 const Container = styled.div`
     display: flex;
     width: 950px;
-    height: 350px;
+    height: 500px;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -97,10 +102,46 @@ const File = styled.input`
     display: none;
 `;
 
+const PDifferences = styled.p`
+    width: 950px;
+    heigh: 50px;
+    margin: 10px;
+    text-align: justify;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+`;
+
+const ActionBttCont = styled.div`
+  width: 950px;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
+`;
+
+const ActionButtons = styled.button`
+    width: 50px;
+    height: 50px;
+    border-radious: 10px;
+    background-color: green;
+    transition: 0.5s;
+    margin: 10px;
+    
+    
+    &:hover {
+    background-color: rgb(0, 164, 0);
+    transition: 0.5s;
+  }
+`;
+
 export const ComparePage = () => {
     const [file1, setFile1] = useState(null);
     const [file2, setFile2] = useState(null);
     const [showResults, setShowResults] = useState(false);
+    const [differenceList, setDifferenceList] = useState([]);
 
     const useFile1 = (event) =>{
         setFile1(event.target.files[0]);
@@ -110,9 +151,24 @@ export const ComparePage = () => {
         setFile2(event.target.files[0]);
     };
 
-    const useCompare = () =>{
+    const useCompare = async (e) =>{
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("File1", file1);
+        formData.append("File2", file2);
         setShowResults(true);
-    };
+    
+
+    try{
+      const response = await api.post('/api/compare', formData,{
+        headers: {"Content-Type": "multipart/form-data"},
+      });
+      setDifferenceList(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
 
 
 
@@ -128,6 +184,7 @@ export const ComparePage = () => {
             </div>
             <div className="description">
                 <p>Upload two .xlsx files to know the differences between one file and other</p>
+                <p>Note: The two files have to have the same numbers of rows</p>
             </div>
             <div className="upload">
                 <File type='file' id='file-uploadOne' onChange={useFile1}/>
@@ -140,7 +197,16 @@ export const ComparePage = () => {
             </div>
             {showResults && (
             <ResultsDiv>
-                <h3>Compare Results:</h3>
+                <h4>Compare Results:</h4>
+                {differenceList.map((differenceList, index)=> (
+                    <ActionBttCont>
+                 <PDifferences key={index}>
+                    {differenceList}  
+                    </PDifferences>
+                    <ActionButtons><svg data-testid="EditDIcon"></svg></ActionButtons>
+                    <ActionButtons><svg data-testid="DeleteIcon"></svg></ActionButtons>
+                    </ActionBttCont>
+                ))}
             </ResultsDiv>
             )}
             </Container>
