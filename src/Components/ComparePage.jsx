@@ -132,8 +132,22 @@ const ActionButtons = styled.button`
     
     
     &:hover {
-    background-color: rgb(0, 164, 0);
+    background-color: rgb(0,164,0);
     transition: 0.5s;
+  }
+`;
+
+const DownloadButton = styled.button`
+  width: 120px;
+  height: 50px;
+  border-radious: 10px;
+  background-color: #008CBA;
+  transition: 0.5s
+  margin: 10px;
+
+  &:hover{
+    background-color: #005F73;
+    transition 0.5s;
   }
 `;
 
@@ -142,6 +156,7 @@ export const ComparePage = () => {
     const [file2, setFile2] = useState(null);
     const [showResults, setShowResults] = useState(false);
     const [differenceList, setDifferenceList] = useState([]);
+    const [showdownloadButton, setShowDownloadButton] = useState(false);
 
     const useFile1 = (event) =>{
         setFile1(event.target.files[0]);
@@ -160,13 +175,39 @@ export const ComparePage = () => {
     
 
     try{
-      const response = await api.post('/api/compare', formData,{
+      const response = await api.post('/api/actions/compare', formData,{
         headers: {"Content-Type": "multipart/form-data"},
       });
       setDifferenceList(response.data);
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const useEdit = (index) => {
+    api.post(`/api/actions/update?Index=${index}`)
+    .then(response =>{
+      alert("Diferencia Actualizada con exito");
+      console.log(response.data);
+      setDifferenceList(response.data);
+      setShowDownloadButton(true);
+    })
+    .catch(error =>{
+      console.error("Error al actualizar la diferencia: ", error);
+    });
+  };
+
+  const useDiscard = (index) => {
+    api.post(`/api/actions/discard?Index=${index}`)
+    .then(response => {
+      alert("Diferencia descartada con exito");
+      console.log(response.data);
+      setDifferenceList(response.data);
+      setShowDownloadButton(true);
+    })
+    .catch(error => {
+      console.error("Error al descartar diferencia: ", error);
+    });
   };
   
 
@@ -199,15 +240,18 @@ export const ComparePage = () => {
             <ResultsDiv>
                 <h4>Compare Results:</h4>
                 {differenceList.map((differenceList, index)=> (
-                    <ActionBttCont>
-                 <PDifferences key={index}>
+                <ActionBttCont key={index}>
+                 <PDifferences>
                     {differenceList}  
                     </PDifferences>
-                    <ActionButtons><svg data-testid="EditDIcon"></svg></ActionButtons>
-                    <ActionButtons><svg data-testid="DeleteIcon"></svg></ActionButtons>
+                    <ActionButtons onClick={() => useEdit(index+1)}><svg data-testid="EditDIcon"></svg></ActionButtons>
+                    <ActionButtons onClick={() => useDiscard(index+1)}><svg data-testid="DeleteIcon"></svg></ActionButtons>
                     </ActionBttCont>
                 ))}
             </ResultsDiv>
+            )}
+            {showdownloadButton && (
+              <DownloadButton>Descargar Archivo</DownloadButton>
             )}
             </Container>
         </InfoCont>
