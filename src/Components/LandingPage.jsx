@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 const Backgr = styled.div`
   width: 1000px;
@@ -53,12 +54,59 @@ const ButtonC = styled.button`
   }
 `;
 
+const ButtonCancel = styled.button`
+    margin: 10px;
+    transition: 0.5s;
+    background-color: darkred;
+    color: whitesmoke;
+
+    &:hover{
+    margin: 10px;
+    transition: 0.5s;
+    background-color: red;
+    border: none;
+  }
+`;
+
+const ButtonLanguage = styled.button`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    transition: 0.5s;
+    background-color: darkgrey;
+    color: whitesmoke;
+
+    &:hover{
+    transition: 0.5s;
+    background-color: grey;
+    border: none;
+  }
+`;
+
+const DivCont = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
 export const LandingPage = () => {
   const [showOptions, setShowOptions] = useState(false);
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+  };
 
   const useShowOptions = () =>{
     setShowOptions(true);
+  }
+
+  const dontShowOptions = () =>{
+    setShowOptions(false);
   }
 
   const useNavigation = (action) =>{
@@ -72,23 +120,32 @@ export const LandingPage = () => {
   return (
     <Backgr>
       <div className="styles.title">
-          <Title>XlComp</Title>
+          <Title>{t('title')}</Title>
       </div>
       <div className="styles.phrase">
-          <Titleh4>¡Analiza tus archivos con un click!</Titleh4>
+          <Titleh4>{t('phrase')}</Titleh4>
       </div>
       {!showOptions ? (
-      <div className="styles.button">
-        <ButtonO onClick={useShowOptions}>¡Vamos!</ButtonO>
-      </div>
+      <DivCont className="styles.button">
+        <ButtonO onClick={useShowOptions}>{t('buttonGo')}</ButtonO>
+        <DivCont className="styles.language-toggle">
+          <ButtonLanguage onClick={() => changeLanguage(i18n.language === 'es' ? 'en' : 'es')}>
+            {i18n.language === 'es' ? t('EN') : t('ES')}
+          </ButtonLanguage>
+        </DivCont>
+      </DivCont>
       ) : (
       
       <div className="styles.options">
-        <ButtonO onClick={()=>useNavigation('compare')}>Compare</ButtonO>
-        <ButtonC onClick={()=>useNavigation('construction')}>Function 2</ButtonC>
-        <ButtonC className="styles.construction" onClick={()=>useNavigation('construction')}>Function 3</ButtonC>
-        <ButtonC className="styles.construction" onClick={()=>useNavigation('construction')}>Function 4</ButtonC>
+        <ButtonO onClick={()=>useNavigation('compare')}>{t('buttonCompare')}</ButtonO>
+        <ButtonC onClick={()=>useNavigation('construction')}>{t('buttonFunc2')}</ButtonC>
+        <ButtonC className="styles.construction" onClick={()=>useNavigation('construction')}>{t('buttonFunc3')}</ButtonC>
+        <ButtonC className="styles.construction" onClick={()=>useNavigation('construction')}>{t('buttonFunc4')}</ButtonC>
+        <div>
+        <ButtonCancel onClick={dontShowOptions}>{t('buttonCancel')}</ButtonCancel>
+        </div>
       </div>
+      
       )}
     </Backgr>
   )

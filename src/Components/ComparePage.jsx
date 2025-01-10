@@ -2,6 +2,8 @@ import React, {useState} from 'react'
 import './ComparePage.css'
 import styled from 'styled-components'
 import api from './services/api.js';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditDIcon from '@mui/icons-material/Edit'
 
@@ -41,7 +43,7 @@ const Titleh4 = styled.h4`
 const TitleCont = styled.div`
     display: flex;
     align-items: center;
-    justify-content: left;
+    justify-content: space-between;
     width: 950px;
     height: 40px;
 `;
@@ -123,12 +125,17 @@ const ActionBttCont = styled.div`
 `;
 
 const ActionButtons = styled.button`
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 50px;
     height: 50px;
     border-radious: 10px;
     background-color: green;
     transition: 0.5s;
     margin: 10px;
+    color: whitesmoke;
+    
     
     
     &:hover {
@@ -138,7 +145,7 @@ const ActionButtons = styled.button`
 `;
 
 const DownloadButton = styled.button`
-  width: 120px;
+  width: 150px;
   height: 50px;
   border-radious: 10px;
   background-color: #008CBA;
@@ -151,12 +158,63 @@ const DownloadButton = styled.button`
   }
 `;
 
+const ButtonCancel = styled.button`
+    margin: 10px;
+    transition: 0.5s;
+    background-color: darkred;
+    color: whitesmoke;
+    width: 100px;
+    height: 35px;
+    font-size: 18px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover{
+    margin: 10px;
+    transition: 0.5s;
+    background-color: red;
+    border: none;
+  }
+`;
+
+const ButtonLanguage = styled.button`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    width: 25px;
+    height: 25px;
+    transition: 0.5s;
+    background-color: darkgrey;
+    color: whitesmoke;
+
+    &:hover{
+    transition: 0.5s;
+    background-color: grey;
+    border: none;
+  }
+`;
+
+const DivCont = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+`;
+
 export const ComparePage = () => {
     const [file1, setFile1] = useState(null);
     const [file2, setFile2] = useState(null);
     const [showResults, setShowResults] = useState(false);
     const [differenceList, setDifferenceList] = useState([]);
     const [showdownloadButton, setShowDownloadButton] = useState(false);
+    const navigate = useNavigate();
+    const { t, i18n } = useTranslation();
+
+    const changeLanguage = (lang) => {
+      i18n.changeLanguage(lang);
+    };
 
     const useFile1 = (event) =>{
         setFile1(event.target.files[0]);
@@ -165,6 +223,10 @@ export const ComparePage = () => {
     const useFile2 = (event) =>{
         setFile2(event.target.files[0]);
     };
+
+    const useNavigation = () =>{
+        navigate('/');
+    }
 
     const useCompare = async (e) =>{
         e.preventDefault();
@@ -209,6 +271,21 @@ export const ComparePage = () => {
       console.error("Error al descartar diferencia: ", error);
     });
   };
+
+ const useDownload = () =>{
+    api.get('/api/actions/download', {responseType: 'blob'})
+    .then(response =>{
+      const url = window.URL.createObjectURL(new Blob ([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'archivo2_actualizado.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    })
+    .catch(error => console.error('Error al descargar el archivo: ', error));
+ }
+
   
 
 
@@ -217,41 +294,47 @@ export const ComparePage = () => {
     <Backgr>
         <InfoCont>
             <TitleCont>
-                <Titleh4>XlComp</Titleh4>
+                <Titleh4>{t('title')}</Titleh4>
+                <DivCont>
+                <ButtonCancel onClick={useNavigation}>{t('buttonHome')}</ButtonCancel>
+                <ButtonLanguage onClick={() => changeLanguage(i18n.language === 'es' ? 'en' : 'es')}>
+                {i18n.language === 'es' ? t('EN') : t('ES')}
+          </ButtonLanguage>
+          </DivCont>
             </TitleCont>
             <Container>
             <div className="functTitle">
-                <Title>Compare Files</Title>
+                <Title>{t('compareTitle')}</Title>
             </div>
             <div className="description">
-                <p>Upload two .xlsx files to know the differences between one file and other</p>
-                <p>Note: The two files have to have the same numbers of rows</p>
+                <p>{t('descriptionFileUpload')}</p>
+                <p>{t('noteDescription')}</p>
             </div>
             <div className="upload">
                 <File type='file' id='file-uploadOne' onChange={useFile1}/>
-                <UploadButton htmlFor='file-uploadOne'>{file1 ? "File One Uploaded" : "Upload File One"}</UploadButton>
+                <UploadButton htmlFor='file-uploadOne'>{file1 ? t('uploadFile1') : t('file1Uploaded')}</UploadButton>
                 <File type='file' id='file-uploadTwo' onChange={useFile2}/>
-                <UploadButton htmlFor='file-uploadTwo'>{file2 ? "File Two Uploaded" : "Upload File Two"}</UploadButton>
+                <UploadButton htmlFor='file-uploadTwo'>{file2 ? t('uploadFile2') : t('file2Uploaded')}</UploadButton>
                 {file1 && file2 && (
-                    <CompareButton onClick={useCompare}>Compare</CompareButton>
+                    <CompareButton onClick={useCompare}>{t('buttonCompare')}</CompareButton>
                 )}
             </div>
             {showResults && (
             <ResultsDiv>
-                <h4>Compare Results:</h4>
+                <h4>{t('compareResults')}</h4>
                 {differenceList.map((differenceList, index)=> (
                 <ActionBttCont key={index}>
                  <PDifferences>
                     {differenceList}  
                     </PDifferences>
-                    <ActionButtons onClick={() => useEdit(index+1)}><svg data-testid="EditDIcon"></svg></ActionButtons>
-                    <ActionButtons onClick={() => useDiscard(index+1)}><svg data-testid="DeleteIcon"></svg></ActionButtons>
+                    <ActionButtons onClick={() => useEdit(index+1)}><EditDIcon/></ActionButtons>
+                    <ActionButtons onClick={() => useDiscard(index+1)}><DeleteIcon/></ActionButtons>
                     </ActionBttCont>
                 ))}
             </ResultsDiv>
             )}
             {showdownloadButton && (
-              <DownloadButton>Descargar Archivo</DownloadButton>
+              <DownloadButton onClick={useDownload}>{t('downloadFile')}</DownloadButton>
             )}
             </Container>
         </InfoCont>
