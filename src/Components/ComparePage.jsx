@@ -216,6 +216,33 @@ export const ComparePage = () => {
       i18n.changeLanguage(lang);
     };
 
+    const translateDifference = (key) => {
+      const parts = key.split(':');
+      const translationKey = parts[1];
+      console.log("Ha entrado en la función");
+      console.log(parts);
+  
+      switch (translationKey) {
+          case 'differentRows':
+              return t('differentRows');
+          case 'nullValueInRow':
+              return t('nullValueInRow', { row: parts[2] });
+          case 'difference':
+              if (parts.length <=6) { // Validar que hay suficientes valores
+                  return t('difference', {
+                      nD: parts[0],
+                      row: parts[2],
+                      column: parts[3],
+                      value1: parts[4],
+                      value2: parts[5]
+                  });
+              }
+              return key; // Retorna como está si el formato no es válido
+          default:
+              return key; // Retorna la clave original si no hay traducción
+      }
+  };
+
     const useFile1 = (event) =>{
         setFile1(event.target.files[0]);
     };
@@ -256,6 +283,7 @@ export const ComparePage = () => {
     })
     .catch(error =>{
       console.error(t('errorUpdate'), error);
+      alert(t('errorUpdate'));
     });
   };
 
@@ -264,11 +292,13 @@ export const ComparePage = () => {
     .then(response => {
       alert(t('fileDiscarted'));
       console.log(response.data);
+      console.log(index);
       setDifferenceList(response.data);
       setShowDownloadButton(true);
     })
     .catch(error => {
       console.error(t('errorDiscard'), error);
+      alert(t('errorDiscard'));
     });
   };
 
@@ -283,7 +313,7 @@ export const ComparePage = () => {
       link.click();
       link.remove();
     })
-    .catch(error => console.error('Error al descargar el archivo: ', error));
+    .catch(error => console.error(t('errorDownload'), error));
  }
 
   
@@ -325,7 +355,7 @@ export const ComparePage = () => {
                 {differenceList.map((differenceList, index)=> (
                 <ActionBttCont key={index}>
                  <PDifferences>
-                    {differenceList}  
+                    {translateDifference(differenceList)}  
                     </PDifferences>
                     <ActionButtons onClick={() => useEdit(index+1)}><EditDIcon/></ActionButtons>
                     <ActionButtons onClick={() => useDiscard(index+1)}><DeleteIcon/></ActionButtons>

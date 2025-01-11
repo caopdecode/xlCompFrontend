@@ -37,7 +37,11 @@ i18n
           fileUpdated: "Diferencia actualizado con exito",
           fileDiscarted: "Diferencia descartada con exito",
           errorUpdated: "Error al actualizar diferencia",
-          errorDiscard: "Error al descartar diferencia"
+          errorDiscard: "Error al descartar diferencia",
+          errorDownload: "Error al descargar archivo",
+          differentRows: "Diferente número de filas",
+          nullValueInRow: "Valor nulo en la fila {{row}}",
+          difference: "{{nD}}. Diferencia: Fila {{row}}, Columna {{column}}: {{value1}} vs {{value2}}"
         },
       },
       en: {
@@ -63,7 +67,11 @@ i18n
           fileUpdated: "Difference updated successfully",
           fileDiscarted: "Difference discarded successfully",
           errorUpdated: "Error updating difference",
-          errorDiscard: "Error discarding difference"
+          errorDiscard: "Error discarding difference",
+          errorDownload: "File download error",
+          differentRows: "Different number of rows",
+          nullValueInRow: "Null value in row {{row}}",
+          difference: "{{nD}}. Difference: Row {{row}}, Column {{column}}: {{value1}} vs {{value2}}"
         },
       },
     },
