@@ -33,7 +33,11 @@ i18n
           uploadFile2: "Subir Archivo 2",
           file2Uploaded: "Archivo 2 Subido",
           compareResults: "Compare Results:",
-          downloadFile: "Descargar Archivo"
+          downloadFile: "Descargar Archivo",
+          fileUpdated: "Diferencia actualizado con exito",
+          fileDiscarted: "Diferencia descartada con exito",
+          errorUpdated: "Error al actualizar diferencia",
+          errorDiscard: "Error al descartar diferencia"
         },
       },
       en: {
@@ -55,7 +59,11 @@ i18n
           uploadFile2: "Upload File 2",
           file2Uploaded: "File 2 Uploaded",
           compareResults: "Compare Results:",
-          downloadFile: "Download File"
+          downloadFile: "Download File",
+          fileUpdated: "Difference updated successfully",
+          fileDiscarted: "Difference discarded successfully",
+          errorUpdated: "Error updating difference",
+          errorDiscard: "Error discarding difference"
         },
       },
     },

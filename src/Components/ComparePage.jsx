@@ -249,26 +249,26 @@ export const ComparePage = () => {
   const useEdit = (index) => {
     api.post(`/api/actions/update?Index=${index}`)
     .then(response =>{
-      alert("Diferencia Actualizada con exito");
+      alert(t('fileUpdated'));
       console.log(response.data);
       setDifferenceList(response.data);
       setShowDownloadButton(true);
     })
     .catch(error =>{
-      console.error("Error al actualizar la diferencia: ", error);
+      console.error(t('errorUpdate'), error);
     });
   };
 
   const useDiscard = (index) => {
     api.post(`/api/actions/discard?Index=${index}`)
     .then(response => {
-      alert("Diferencia descartada con exito");
+      alert(t('fileDiscarted'));
       console.log(response.data);
       setDifferenceList(response.data);
       setShowDownloadButton(true);
     })
     .catch(error => {
-      console.error("Error al descartar diferencia: ", error);
+      console.error(t('errorDiscard'), error);
     });
   };
 
@@ -312,9 +312,9 @@ export const ComparePage = () => {
             </div>
             <div className="upload">
                 <File type='file' id='file-uploadOne' onChange={useFile1}/>
-                <UploadButton htmlFor='file-uploadOne'>{file1 ? t('uploadFile1') : t('file1Uploaded')}</UploadButton>
+                <UploadButton htmlFor='file-uploadOne'>{file1 ? t('file1Uploaded') : t('uploadFile1')}</UploadButton>
                 <File type='file' id='file-uploadTwo' onChange={useFile2}/>
-                <UploadButton htmlFor='file-uploadTwo'>{file2 ? t('uploadFile2') : t('file2Uploaded')}</UploadButton>
+                <UploadButton htmlFor='file-uploadTwo'>{file2 ? t('file2Uploaded') : t('uploadFile2')}</UploadButton>
                 {file1 && file2 && (
                     <CompareButton onClick={useCompare}>{t('buttonCompare')}</CompareButton>
                 )}
