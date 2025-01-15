@@ -208,8 +208,8 @@ const DivCont = styled.div`
 `;
 
 export const ComparePage = () => {
-    const [file1, setFile1] = useState(null);
-    const [file2, setFile2] = useState(null);
+    const [File1, setFile1] = useState(null);
+    const [File2, setFile2] = useState(null);
     const [showResults, setShowResults] = useState(false);
     const [differenceList, setDifferenceList] = useState([]);
     const [showdownloadButton, setShowDownloadButton] = useState(false);
@@ -262,9 +262,10 @@ export const ComparePage = () => {
     const useCompare = async (e) =>{
         e.preventDefault();
         const formData = new FormData();
-        formData.append("File1", file1);
-        formData.append("File2", file2);
+        formData.append("File1", File1);
+        formData.append("File2", File2);
         setShowResults(true);
+        console.log(File1, File2);
     
 
     try{
@@ -346,10 +347,10 @@ export const ComparePage = () => {
             </div>
             <div className="upload">
                 <File type='file' id='file-uploadOne' onChange={useFile1}/>
-                <UploadButton htmlFor='file-uploadOne'>{file1 ? t('file1Uploaded') : t('uploadFile1')}</UploadButton>
+                <UploadButton htmlFor='file-uploadOne'>{File1 ? t('file1Uploaded') : t('uploadFile1')}</UploadButton>
                 <File type='file' id='file-uploadTwo' onChange={useFile2}/>
-                <UploadButton htmlFor='file-uploadTwo'>{file2 ? t('file2Uploaded') : t('uploadFile2')}</UploadButton>
-                {file1 && file2 && (
+                <UploadButton htmlFor='file-uploadTwo'>{File2 ? t('file2Uploaded') : t('uploadFile2')}</UploadButton>
+                {File1 && File2 && (
                     <CompareButton onClick={useCompare}>{t('buttonCompare')}</CompareButton>
                 )}
             </div>
