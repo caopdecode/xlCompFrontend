@@ -75,9 +75,11 @@ const CompareButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   margin-top: 20px;
+  transition: 0.5s;
 
   &:hover {
     background-color: #005f73;
+    transition: 0.5s;
   }
 `;
 
@@ -145,12 +147,14 @@ const ActionButtons = styled.button`
 `;
 
 const DownloadButton = styled.button`
-  width: 150px;
+  width: 170px;
   height: 50px;
   border-radious: 10px;
   background-color: #008CBA;
-  transition: 0.5s
-  margin: 10px;
+  transition: 0.5s;
+  margin-top: 10px;
+  font-size: 14px;
+  color: whitesmoke;
 
   &:hover{
     background-color: #005F73;

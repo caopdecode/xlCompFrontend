@@ -32,7 +32,7 @@ i18n
           file1Uploaded: "Archivo 1 Subido",
           uploadFile2: "Subir Archivo 2",
           file2Uploaded: "Archivo 2 Subido",
-          compareResults: "Compare Results:",
+          compareResults: "Resultados de la Comparación:",
           downloadFile: "Descargar Archivo",
           fileUpdated: "Diferencia actualizado con exito",
           fileDiscarted: "Diferencia descartada con exito",
