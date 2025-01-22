@@ -11,19 +11,19 @@ This project is a web application that compares two Excel files. Taking the firs
 
 ## Test The Project
 
-The backend is deployed on Railway, and the frontend is deployed on Vercel. To test the project, visit:
+- The backend is deployed on Railway, and the frontend is deployed on Vercel. To test the project, visit:
 
-- https://xlcomp.vercel.app/
+  https://xlcomp.vercel.app/
 
 For a quick test, it is recommended to use the following files:
 
-File 1:
+- File 1:
 
-- [xlComp.xlsx](https://github.com/user-attachments/files/18511717/xlComp.xlsx)
+  [xlComp.xlsx](https://github.com/user-attachments/files/18511717/xlComp.xlsx)
 
-File 2:
+- File 2:
 
-- [xlComp_Copy.xlsx](https://github.com/user-attachments/files/18511719/xlComp_Copy.xlsx)
+  [xlComp_Copy.xlsx](https://github.com/user-attachments/files/18511719/xlComp_Copy.xlsx)
 
 ### Steps: 
 
